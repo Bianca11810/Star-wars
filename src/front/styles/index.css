@@ -1,3 +1,45 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+/* 
+    General Styles
+*/
+
+.aboutImg {
+  width: 350px;
+}
+.midSection {
+  display: flex;
+  margin: 1rem;
+}
+.midSection > p {
+  padding: 2rem;
+}
+.AboutPage > h5 {
+  margin: 1rem;
+}
+
+.botSection {
+  display: flex;
+  padding: 1rem;
+}
+.botSection > h6 {
+  margin: 1rem;
+}
+
+/* div scroll */
+/* this is the parent div */
+.peopleCont {
+  white-space: nowrap;
+  overflow-x: scroll;
+  margin: 1rem;
+}
+/* this is the child */
+.peopleDiv {
+  display: inline-block;
+  margin-right: 1rem;
+  box-sizing: border-box;
+}
+.card-row {
+  overflow-x: scroll;
+}

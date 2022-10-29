@@ -1,7 +1,6 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
 			demo: [
 				{
 					title: "FIRST",
@@ -13,25 +12,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			people: [],
+			planets: [],
+			favorites: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-
-			getMessage: async () => {
-				try{
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				}catch(error){
-					console.log("Error loading message from backend", error)
-				}
+			loadSomeData: () => {
+				/**
+					fetch().then().then(data => setStore({ "foo": data.bar }))
+				*/
 			},
 			changeColor: (index, color) => {
 				//get the store
@@ -46,6 +40,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			loadPeople: () => {
+				// fetch people from SWAPI
+				fetch('https://swapi.dev/api/people')
+				.then((response) => response.json())
+				.then((data) => {
+					let people = data.results
+					console.log("PEOPLE", people)
+					setStore({people: people})
+				})
+			},
+
+			loadPlanets: () => {
+				// fetch planets from SWAPI
+				fetch('https://swapi.dev/api/planets')
+				.then((response) => response.json())
+				.then((data) => {
+					let planets = data.results
+					console.log("PLANETS", planets)
+					setStore({planets: planets})
+				})
+			},
+
+			getPerson: (idx) => {
+				console.log("get person ", idx);
+				const people = getStore().people
+				for (let index = 0; index < people.length; index++) {
+					if (idx == index) {
+						return people[index]
+					}
+				}
+			},
+
+			getPlanet: (idx) => {
+				console.log("get person ", idx);
+				const planets = getStore().planets
+				for (let index = 0; index < planets.length; index++) {
+					if (idx == index) {
+						return planets[index]
+					}	
+				}
+			},
+
+			addFavorite: (name) => {
+				const favorites = getStore().favorites
+				favorites.push(name)
+				setStore({favorites: favorites})
+			},
+
+			deleteFavorite: (idx) => {
+				const favorites = getStore().favorites
+				let filtered = favorites.filter((f, i) => i !== idx)
+				setStore({favorites: filtered})
 			}
 		}
 	};
