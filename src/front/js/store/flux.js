@@ -42,23 +42,44 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 			},
 			loadPeople: () => {
+				const opts = {
+					method: "GET",
+					mode: "cors",
+					headers: {
+					  "Content-Type": "application/json",
+					  "Access-Control-Allow-Origin": "*",
+					  //"Access-Control-Allow-Headers": "Origin",
+					  //"X-Requested-With, Content-Type": "Accept",
+					},
+				}
 				// fetch people from SWAPI
-				fetch('https://swapi.dev/api/people')
+				fetch('https://3001-bianca11810-starwars-yzkjob81mi4.ws-us73.gitpod.io/api/people', opts)
 				.then((response) => response.json())
 				.then((data) => {
-					let people = data.results
-					console.log("PEOPLE", people)
+					console.log('here', data);
+					let people = data.data
+					// console.log("PEOPLE", people)
 					setStore({people: people})
 				})
 			},
 
 			loadPlanets: () => {
 				// fetch planets from SWAPI
-				fetch('https://swapi.dev/api/planets')
+				const opts = {
+					method: "GET",
+					mode: "cors",
+					headers: {
+					  "Content-Type": "application/json",
+					  "Access-Control-Allow-Origin": "*",
+					  //"Access-Control-Allow-Headers": "Origin",
+					  //"X-Requested-With, Content-Type": "Accept",
+					},
+				}
+				fetch('https://3001-bianca11810-starwars-yzkjob81mi4.ws-us73.gitpod.io/api/planets',opts)
 				.then((response) => response.json())
 				.then((data) => {
-					let planets = data.results
-					console.log("PLANETS", planets)
+					let planets = data.data
+					// console.log("PLANETS", planets)
 					setStore({planets: planets})
 				})
 			},

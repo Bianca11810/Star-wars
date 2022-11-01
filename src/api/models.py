@@ -35,6 +35,7 @@ class Favorites(db.Model):
     item_type = db.Column(db.String(256))
     name = db.Column(db.String(256))
 
+
 class Planets(db.Model):
     __tablename__ = 'Planets'
     id = db.Column(db.Integer, primary_key = True, unique = True)
@@ -48,8 +49,21 @@ class Planets(db.Model):
     surface_water = db.Column(db.Integer)
     population = db.Column(db.Integer)
 
-    def to_dict(self):
-        return {}
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "rotation_period": self.rotation_period,
+            "orbital_period": self.orbital_period,
+            "diameter": self.diameter,
+            "climate": self.climate,
+            "gravity": self.gravity,
+            "terrain": self.terrain,
+            "surface_water": self.surface_water,
+            "population": self.population,
+            #"favorites": self.favorites
+            # do not serialize the password, its a security breach
+        }
 
 class People(db.Model):
     __tablename__ = 'People'
@@ -62,9 +76,20 @@ class People(db.Model):
     eye_color = db.Column(db.String(256))
     birth_year = db.Column(db.String(256))
     gender = db.Column(db.String(256))
-
-    def to_dict(self):
-        return {}
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "height": self.height,
+            "mass": self.mass,
+            "hair_color": self.hair_color,
+            "skin_color": self.skin_color,
+            "eye_color": self.eye_color,
+            "birth_year": self.birth_year,
+            "gender": self.gender,
+            #"favorites": self.favorites
+            # do not serialize the password, its a security breach
+        }
 
 # class starships(db.Model):
 #      __tablename__ = 'starships'
