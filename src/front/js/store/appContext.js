@@ -33,6 +33,7 @@ const injectContext = PassedComponent => {
 			 **/
 			state.actions.loadPeople();
 			state.actions.loadPlanets();
+			state.actions.syncTokenFromSessionStore();
 		}, []);
 
 

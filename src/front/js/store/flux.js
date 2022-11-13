@@ -15,9 +15,60 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 			people: [],
 			planets: [],
-			favorites: []
+			favorites: [],
+			token: null
 		},
 		actions: {
+			syncTokenFromSessionStore: () => {
+				const token = sessionStorage.getItem('token');
+				if(token && token !="" && token !=undefined) setStore({ token: token});
+			},
+			logout: () => {
+				sessionStorage.removeItem('token');
+				setStore({ token: null});
+			},
+
+			login: async(email, password) => {
+				const opts = {
+					method: 'POST',
+					headers: {
+						"content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						"email": email,
+						"password": password
+					})
+				}
+				try{
+					const resp = await fetch('https://3001-bianca11810-starwars-yzkjob81mi4.ws-us75.gitpod.io/api/login', opts)		
+					if(resp.status !== 200){
+						alert("there was an error on the fetch response at login fetch")
+						return false;
+					}
+					const data = await resp.json()
+						sessionStorage.setItem("token", data.access_token)
+						setStore({ token: data.access_token })
+						return true
+				}catch(error){
+					console.error('there was an error on the login fetch', error)
+				}
+			},
+				getMessage: () => {
+					const store = getStore();
+					const opts = {
+						headers: {
+							"Authorization": "Bearer" + store.token
+						}
+					};
+					// hello problem
+					fetch("https://bianca11810-starwars-yzkjob81mi4.ws-us75.gitpod.io/api/login",opts)
+						.then(resp => resp.json())
+						.then (data =>setStore[{ message: data.message}])
+						.catch(error => console.log ("error loading message from backend",error));
+				}, 
+
+
+
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
@@ -53,7 +104,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 				}
 				// fetch people from SWAPI
-				fetch('https://3001-bianca11810-starwars-yzkjob81mi4.ws-us73.gitpod.io/api/people', opts)
+				fetch('https://3001-bianca11810-starwars-yzkjob81mi4.ws-us75.gitpod.io/api/people', opts)
 				.then((response) => response.json())
 				.then((data) => {
 					console.log('here', data);
@@ -75,7 +126,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					  //"X-Requested-With, Content-Type": "Accept",
 					},
 				}
-				fetch('https://3001-bianca11810-starwars-yzkjob81mi4.ws-us73.gitpod.io/api/planets',opts)
+				fetch('https://3001-bianca11810-starwars-yzkjob81mi4.ws-us75.gitpod.io/api/planets',opts)
 				.then((response) => response.json())
 				.then((data) => {
 					let planets = data.data

@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 // import rigoImage from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
 
@@ -6,6 +6,7 @@ import { Context } from "../store/appContext";
 
 // import components
 import Card from "../component/card";
+
 
 export const Home = () => {
 	const {store, action} = useContext(Context)
